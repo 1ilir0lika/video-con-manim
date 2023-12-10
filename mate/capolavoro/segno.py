@@ -94,7 +94,7 @@ class intro(Scene):
 class visivo(Scene):        
     def construct(self):    
         intro=Tex(r"""
-                vediamolo adeso da un punto di vista grafico
+                vediamolo adesso da un punto di vista grafico
                 """,
                 tex_environment="{minipage}{25em}"
         ).scale_to_fit_width(20)
@@ -102,8 +102,33 @@ class visivo(Scene):
             FadeIn(intro,shift=DOWN)
         )
         self.wait(3)
-        axes = Axes(axis_config={'tip_shape': StealthTip}).add_coordinates()
-        axes_labels = axes.get_axis_labels()
-
-#class negativi(Scene):
-    #def construct(self):
+        #definisci la funzione di prima
+        function = lambda x: x^2-2*x-3
+        #disegna la funzione
+        graph = axes.get_graph(function, color=BLUE)
+        #indica con 2 punti e 2 label le intersezioni con l'asse trovate prima
+        intersezioni=VGroup(
+            Dot([-1,0,0]),
+            Dot([3,0,0]),
+            Tex(r"$x=-1$").next_to([-1,0,0],DOWN),
+            Tex(r"$x=3$").next_to([3,0,0],DOWN)
+        )
+        #disegna la funzione
+        self.play(
+            ShowCreation(graph),
+            Write(axes_labels),
+            Write(intersezioni)
+        )
+        self.wait(3)
+        #colora l'area negativa
+        area_negativa=axes.get_area(graph, -1, 3, bounded=graph, color=RED)
+        self.play(
+            ShowCreation(area_negativa)
+        )
+        self.wait(3)
+        #colora l'area positiva
+        area_positiva=axes.get_area(graph, -1, 3, bounded=intera_graph, color=GREEN)
+        self.play(
+            ShowCreation(area_positiva)
+        )
+        self.wait(3)
