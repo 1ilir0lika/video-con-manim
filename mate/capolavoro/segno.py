@@ -45,10 +45,6 @@ conclusione=Tex(r"""
 ).scale_to_fit_width(14)
 axes = Axes(axis_config={'tip_shape': StealthTip}).add_coordinates()
 axes_labels = axes.get_axis_labels()
-intera_graph = axes.plot(lambda x: 2*x+2, color=BLUE)
-inter_dot = Dot([-1,0,0])
-arrow = Arrow([2,2,0],inter_dot, buff=0)
-inter_dot_text = Text('0 della funzione').next_to([2,2,0], UP).add_background_rectangle(color=BLACK)
 
 class intro(Scene):
     def construct(self):
@@ -97,38 +93,50 @@ class visivo(Scene):
                 vediamolo adesso da un punto di vista grafico
                 """,
                 tex_environment="{minipage}{25em}"
-        ).scale_to_fit_width(20)
+        ).scale_to_fit_width(14)
         self.play(
             FadeIn(intro,shift=DOWN)
         )
         self.wait(3)
+        self.play(
+            FadeOut(intro)
+        )
         #definisci la funzione di prima
-        function = lambda x: x^2-2*x-3
+        funzione = lambda x: x**2-2*x-3
         #disegna la funzione
-        graph = axes.get_graph(function, color=BLUE)
+        graph = axes.plot(funzione, color=DARK_BLUE)
         #indica con 2 punti e 2 label le intersezioni con l'asse trovate prima
         intersezioni=VGroup(
             Dot([-1,0,0]),
             Dot([3,0,0]),
-            Tex(r"$x=-1$").next_to([-1,0,0],DOWN),
-            Tex(r"$x=3$").next_to([3,0,0],DOWN)
+            Tex(r"$x=-1$").next_to([-1,0,0],DOWN).add_background_rectangle(color=BLACK),
+            Tex(r"$x=3$").next_to([3,0,0],DOWN).add_background_rectangle(color=BLACK)
         )
         #disegna la funzione
         self.play(
-            ShowCreation(graph),
+            FadeIn(VGroup(axes,axes_labels)),
+            Write(graph),
             Write(axes_labels),
+        )
+        self.wait(3)
+        self.play(
             Write(intersezioni)
         )
         self.wait(3)
         #colora l'area negativa
-        area_negativa=axes.get_area(graph, -1, 3, bounded=graph, color=RED)
+        area_negativa=axes.get_area(graph,x_range=(-1,3), color=RED)
         self.play(
-            ShowCreation(area_negativa)
+            Write(area_negativa)
         )
         self.wait(3)
         #colora l'area positiva
-        area_positiva=axes.get_area(graph, -1, 3, bounded=intera_graph, color=GREEN)
+        area_positiva1=axes.get_area(graph,x_range=(3,6), color=GREEN)
+        area_positiva2=axes.get_area(graph,x_range=(-7,-1), color=GREEN)
         self.play(
-            ShowCreation(area_positiva)
+            Write(VGroup(area_positiva1,area_positiva2))
+        )
+        self.wait(3)
+        self.play(
+            FadeOut(VGroup(area_negativa,area_positiva1,area_positiva2,graph,intersezioni,axes,axes_labels))
         )
         self.wait(3)
