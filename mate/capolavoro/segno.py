@@ -107,10 +107,10 @@ class visivo(Scene):
         graph = axes.plot(funzione, color=DARK_BLUE)
         #indica con 2 punti e 2 label le intersezioni con l'asse trovate prima
         intersezioni=VGroup(
-            Dot([-1,0,0]),
-            Dot([3,0,0]),
-            Tex(r"$x=-1$").next_to([-1,0,0],DOWN).add_background_rectangle(color=BLACK),
-            Tex(r"$x=3$").next_to([3,0,0],DOWN).add_background_rectangle(color=BLACK)
+            Dot(plane.coords_to_point(-1,0)),
+            Dot(plane.coords_to_point(2.5,0)),
+            Tex(r"$x=-1$").next_to(plane.coords_to_point(-1,0),DOWN).add_background_rectangle(color=BLACK),
+            Tex(r"$x=3$").next_to(plane.coords_to_point(3,0),DOWN).add_background_rectangle(color=BLACK)
         )
         #disegna la funzione
         self.play(
